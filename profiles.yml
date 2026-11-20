@@ -1,0 +1,7 @@
+livraison:
+  target: dev
+  outputs:
+    dev:
+      type: duckdb
+      path: livraison.duckdb
+      threads: 4
