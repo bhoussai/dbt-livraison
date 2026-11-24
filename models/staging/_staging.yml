@@ -1,0 +1,32 @@
+version: 2
+
+models:
+  - name: stg_orders
+    description: "Commandes Olist, une ligne par commande (staging : types et noms nettoyés)."
+    columns:
+      - name: order_id
+        description: "Identifiant unique de la commande."
+        data_tests:
+          - unique
+          - not_null
+      - name: customer_id
+        description: "Identifiant client propre à la commande (différent de customer_unique_id)."
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_customers')
+                field: customer_id
+      - name: order_status
+        description: "Statut de la commande."
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: ['created','approved','invoiced','processing','shipped','delivered','unavailable','canceled']
+
+  - name: stg_customers
+    columns:
+      - name: customer_id
+        data_tests:
+          - unique
+          - not_null
