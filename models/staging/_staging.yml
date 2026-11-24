@@ -25,8 +25,79 @@ models:
                 values: ['created','approved','invoiced','processing','shipped','delivered','unavailable','canceled']
 
   - name: stg_customers
+    description: "Clients Olist. customer_id est propre à chaque commande ; customer_unique_id identifie la personne."
     columns:
       - name: customer_id
+        description: "Identifiant client par commande."
         data_tests:
           - unique
           - not_null
+
+  - name: stg_products
+    description: "Catalogue produits."
+    columns:
+      - name: product_id
+        description: "Identifiant unique du produit."
+        data_tests:
+          - unique
+          - not_null
+
+  - name: stg_sellers
+    description: "Vendeurs de la marketplace."
+    columns:
+      - name: seller_id
+        description: "Identifiant unique du vendeur."
+        data_tests:
+          - unique
+          - not_null
+
+  - name: stg_product_category_translation
+    description: "Traduction des catégories de produits (portugais vers anglais)."
+    columns:
+      - name: product_category_name
+        description: "Nom de catégorie en portugais."
+        data_tests:
+          - unique
+          - not_null
+
+  - name: stg_order_items
+    description: "Lignes de commande : une ligne par article d'une commande."
+    columns:
+      - name: order_id
+        data_tests:
+          - relationships:
+              arguments:
+                to: ref('stg_orders')
+                field: order_id
+      - name: product_id
+        data_tests:
+          - relationships:
+              arguments:
+                to: ref('stg_products')
+                field: product_id
+      - name: seller_id
+        data_tests:
+          - relationships:
+              arguments:
+                to: ref('stg_sellers')
+                field: seller_id
+
+  - name: stg_order_payments
+    description: "Paiements : une commande peut avoir plusieurs paiements."
+    columns:
+      - name: order_id
+        data_tests:
+          - relationships:
+              arguments:
+                to: ref('stg_orders')
+                field: order_id
+
+  - name: stg_order_reviews
+    description: "Avis clients sur les commandes."
+    columns:
+      - name: order_id
+        data_tests:
+          - relationships:
+              arguments:
+                to: ref('stg_orders')
+                field: order_id
