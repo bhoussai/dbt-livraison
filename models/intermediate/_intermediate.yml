@@ -1,0 +1,16 @@
+version: 2
+
+models:
+  - name: int_order_payments_agg
+    description: "Paiements agrégés : une ligne par commande."
+    columns:
+      - name: order_id
+        description: "Identifiant de la commande (grain du model)."
+        data_tests:
+          - unique
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_orders')
+                field: order_id
+                
