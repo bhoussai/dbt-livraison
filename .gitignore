@@ -5,3 +5,4 @@ logs/
 *.duckdb.wal
 data/
 __pycache__/
+.user.yml
