@@ -62,6 +62,12 @@ models:
 
   - name: stg_order_items
     description: "Lignes de commande : une ligne par article d'une commande."
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - order_id
+              - order_item_id
     columns:
       - name: order_id
         data_tests:
@@ -84,6 +90,12 @@ models:
 
   - name: stg_order_payments
     description: "Paiements : une commande peut avoir plusieurs paiements."
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - order_id
+              - payment_sequential
     columns:
       - name: order_id
         data_tests:
