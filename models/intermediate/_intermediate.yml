@@ -13,4 +13,19 @@ models:
               arguments:
                 to: ref('stg_orders')
                 field: order_id
-                
+  - name: int_order_items_agg
+    description: "Articles agrégés : une ligne par commande."
+    columns:
+       - name: order_id
+         description: "Identifiant de la commande."
+         data_tests:
+         - unique
+         - not_null
+         - relationships:
+             arguments:
+              to: ref('stg_orders')
+              field: order_id
+                                                                                                
+      
+                                    
+
