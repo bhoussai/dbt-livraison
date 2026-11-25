@@ -1,0 +1,19 @@
+version: 2
+
+models:
+  - name: fact_orders
+    description: "Une ligne par commande, avec paiements, articles et délai de livraison."
+    columns:
+      - name: order_id
+        description: "Identifiant de la commande (grain du model)."
+        data_tests:
+          - unique
+          - not_null
+          - relationships:
+             arguments:
+               to: ref('stg_orders')
+               field: order_id
+      - name: customer_id
+        description: "Identifiant du client."
+        data_tests:
+          - not_null
