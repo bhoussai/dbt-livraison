@@ -13,6 +13,13 @@ models:
              arguments:
                to: ref('stg_orders')
                field: order_id
+      - name: customer_unique_id
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_customers')
+                field: customer_unique_id
       - name: customer_id
         description: "Identifiant du client."
         data_tests:
@@ -25,5 +32,7 @@ models:
          data_tests:
            - unique
            - not_null
+
+  
         
 
