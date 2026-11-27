@@ -36,10 +36,17 @@ models:
     description: "table de dimension des produits par catégorie"
     columns:
        - name: product_id
-         description: "Identifiant uniquede chaque produit avec une ligne par produit"
+         description: "Identifiant unique de chaque produit avec une ligne par produit"
          data_tests:
           - unique
           - not_null
+  - name: dim_sellers
+    description: "une table de dimension vendeur ayant Une ligne = un produit"
+    columns:
+     - name: seller_id
+       data_tests:
+        - unique
+        - not_null
           
   
         
