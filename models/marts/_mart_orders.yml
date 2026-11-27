@@ -10,10 +10,11 @@ models:
           - unique
           - not_null
           - relationships:
-             arguments:
-               to: ref('stg_orders')
-               field: order_id
+              arguments:
+                to: ref('stg_orders')
+                field: order_id
       - name: customer_unique_id
+        description: "Identifiant de la personne, clé étrangère vers dim_customers."
         data_tests:
           - not_null
           - relationships:
@@ -21,33 +22,57 @@ models:
                 to: ref('dim_customers')
                 field: customer_unique_id
       - name: customer_id
-        description: "Identifiant du client."
+        description: "Identifiant du client propre à la commande."
         data_tests:
           - not_null
+
   - name: dim_customers
     description: "Dimension client : une ligne par personne réelle (customer_unique_id)."
     columns:
-       - name: customer_unique_id
-         description: "Identifiant unique de la personne. Les attributs (ville, état) viennent de sa commande la plus récente."
-         data_tests:
-           - unique
-           - not_null
-  - name: dim_products
-    description: "table de dimension des produits par catégorie"
-    columns:
-       - name: product_id
-         description: "Identifiant unique de chaque produit avec une ligne par produit"
-         data_tests:
+      - name: customer_unique_id
+        description: "Identifiant unique de la personne. Les attributs (ville, état) viennent de sa commande la plus récente."
+        data_tests:
           - unique
           - not_null
-  - name: dim_sellers
-    description: "une table de dimension vendeur ayant Une ligne = un produit"
-    columns:
-     - name: seller_id
-       data_tests:
-        - unique
-        - not_null
-          
-  
-        
 
+  - name: dim_products
+    description: "Dimension produit : une ligne par produit, avec la catégorie traduite en anglais."
+    columns:
+      - name: product_id
+        description: "Identifiant unique du produit."
+        data_tests:
+          - unique
+          - not_null
+
+  - name: dim_sellers
+    description: "Dimension vendeur : une ligne par vendeur."
+    columns:
+      - name: seller_id
+        description: "Identifiant unique du vendeur."
+        data_tests:
+          - unique
+          - not_null
+
+  - name: fact_orders_items
+    description: "Faits au grain article : une ligne par article d'une commande, identifiée par (order_id, order_item_id)."
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - order_id
+              - order_item_id
+    columns:
+      - name: product_id
+        description: "Clé étrangère vers dim_products."
+        data_tests:
+          - relationships:
+              arguments:
+                to: ref('dim_products')
+                field: product_id
+      - name: seller_id
+        description: "Clé étrangère vers dim_sellers."
+        data_tests:
+          - relationships:
+              arguments:
+                to: ref('dim_sellers')
+                field: seller_id
